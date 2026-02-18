@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: my_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 31416
+      POSTGRES_DB: postgres  # Тільки назва бази!
+    ports:
+      - "5432:5432"          # Зовнішній порт : Внутрішній порт (має бути 5432)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  auth-api:
+    build: ./auth-api
+    depends_on:
+      - postgres             # Важливо: чекаємо, поки база підніметься
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://postgres:5432/postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=31416
+      - JWT_SECRET=5367566859703373367639792F423F452848284D6251655468576D5A71347437
+      - INTERNAL_TOKEN=my_password_is_so_secret
+    ports:
+      - "8080:8080"
+
+  data-api:
+    build: ./data-api
+    environment:
+      - INTERNAL_TOKEN=my_password_is_so_secret
+    ports:
+      - "8081:8081"
+
+volumes:
+  postgres_data:             # Тепер правильно на рівні із services

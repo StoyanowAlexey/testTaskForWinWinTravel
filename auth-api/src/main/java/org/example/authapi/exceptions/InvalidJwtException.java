@@ -1,0 +1,7 @@
+package org.example.authapi.exceptions;
+
+public class InvalidJwtException extends RuntimeException{
+    public InvalidJwtException(String message) {
+        super(message);
+    }
+}
