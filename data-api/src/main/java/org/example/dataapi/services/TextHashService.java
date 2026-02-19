@@ -9,7 +9,7 @@ public class TextHashService {
         return new StringBuilder(text)
                 .reverse()
                 .toString()
-                .toLowerCase();
+                .toUpperCase();
     }
 
 }

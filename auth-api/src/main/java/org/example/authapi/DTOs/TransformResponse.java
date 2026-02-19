@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransformResponse {
-    private String textForResponse;
+    private String text;
 }

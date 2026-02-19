@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   postgres:
     image: postgres:16
@@ -6,7 +8,8 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 31416
-      POSTGRES_DB: postgres  # Тільки назва бази!
+      POSTGRES_DB: postgres
+    command: ["postgres", "-c", "timezone=UTC"]# Тільки назва бази!
     ports:
       - "5432:5432"          # Зовнішній порт : Внутрішній порт (має бути 5432)
     volumes:
@@ -15,13 +18,14 @@ services:
   auth-api:
     build: ./auth-api
     depends_on:
-      - postgres             # Важливо: чекаємо, поки база підніметься
+      - postgres
     environment:
+      # Назви зліва мають збігатися з тими, що в application.properties
       - POSTGRES_URL=jdbc:postgresql://postgres:5432/postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=31416
-      - JWT_SECRET=5367566859703373367639792F423F452848284D6251655468576D5A71347437
       - INTERNAL_TOKEN=my_password_is_so_secret
+      - JWT_SECRET=5367566859703373367639792F423F452848284D6251655468576D5A71347437
     ports:
       - "8080:8080"
 

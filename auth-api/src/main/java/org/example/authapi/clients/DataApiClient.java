@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 )
 public interface DataApiClient {
 
-    @PostMapping("/transform")
+    @PostMapping("/api/transform")
     TransformResponse transform(
             @RequestHeader("X-Internal-Token") String token,
             @RequestBody TransformRequest request

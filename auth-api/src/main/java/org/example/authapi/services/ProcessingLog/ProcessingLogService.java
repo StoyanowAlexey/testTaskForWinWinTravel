@@ -27,18 +27,21 @@ public class ProcessingLogService {
 
     public TransformResponse process(TransformRequest transformRequest) {
         if (transformRequest == null
-                || transformRequest.getTextFromRequest() == null
-                || transformRequest.getTextFromRequest().isBlank()) {
+                || transformRequest.getText() == null
+                || transformRequest.getText().isBlank()) {
             throw new InvalidRequestException("Text must not be null or empty");
         }
         String email = authService.getEmailByAuthorization();
         ProcessingLog processingLog = new ProcessingLog();
         processingLog.setCreatedAt(LocalDateTime.now());
-        processingLog.setInputText(transformRequest.getTextFromRequest());
+        processingLog.setInputText(transformRequest.getText());
         processingLog.setUserId(userRepository.getUserByEmail(email).getId());
-        String responseText = dataApiClient.transform(internalToken, transformRequest).getTextForResponse();
-        processingLog.setOutputText(responseText);
+        TransformResponse response = dataApiClient.transform(internalToken, transformRequest);
+        if (response.getText() == null || response.getText().isBlank()) {
+            throw new InvalidRequestException("Text is empty");
+        }
+        processingLog.setOutputText(response.getText());
         processingLogRepository.save(processingLog);
-        return new TransformResponse(responseText);
+        return response;
     }
 }

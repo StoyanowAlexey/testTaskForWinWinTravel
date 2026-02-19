@@ -18,7 +18,7 @@ public class ProcessingLogController {
     @PostMapping("/process")
     @ResponseStatus(HttpStatus.OK)
     public TransformResponse process(@RequestBody TransformRequest request){
-        System.out.println("Request : " +  request.getTextFromRequest());
+        System.out.println("Request : " +  request.getText());
         return processingLogService.process(request);
     }
 

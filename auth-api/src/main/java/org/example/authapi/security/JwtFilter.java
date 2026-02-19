@@ -27,26 +27,25 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
+        // Якщо токен є і він починається з Bearer
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             try {
                 if (jwtService.validateTokenSimple(token)) {
                     String username = jwtService.extractUsername(token);
-
                     UsernamePasswordAuthenticationToken auth =
                             new UsernamePasswordAuthenticationToken(username, null, null);
 
                     SecurityContextHolder.getContext().setAuthentication(auth);
-                } else {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
                 }
+                // ВИДАЛИ блок else з response.setStatus(401)
             } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
+                // Якщо токен битий — просто ігноруємо.
+                // SecurityConfig сам вирішить, пускати далі чи ні.
             }
         }
 
+        // Цей рядок МАЄ бути поза всіма if/else, щоб запит завжди йшов далі
         filterChain.doFilter(request, response);
     }
 }

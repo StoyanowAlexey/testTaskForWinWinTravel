@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransformRequest {
-    private String textFromRequest;
+    private String text;
 }
