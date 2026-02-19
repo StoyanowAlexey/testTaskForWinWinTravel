@@ -32,9 +32,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // Використовуй тільки ці два паттерни
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/error").permitAll() // Дозволяємо системні сторінки помилок
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

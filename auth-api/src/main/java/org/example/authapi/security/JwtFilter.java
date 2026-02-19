@@ -26,8 +26,6 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
-
-        // Якщо токен є і він починається з Bearer
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             try {
@@ -38,14 +36,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
-                // ВИДАЛИ блок else з response.setStatus(401)
             } catch (Exception e) {
-                // Якщо токен битий — просто ігноруємо.
-                // SecurityConfig сам вирішить, пускати далі чи ні.
             }
         }
-
-        // Цей рядок МАЄ бути поза всіма if/else, щоб запит завжди йшов далі
         filterChain.doFilter(request, response);
     }
 }
