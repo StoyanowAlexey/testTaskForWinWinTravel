@@ -18,7 +18,7 @@ public class ErrorAdviceController {
     public ErrorResponse handleInvalidXInternalToken(InvalidXInternalToken ex) {
         return new ErrorResponse(
                 ex.getMessage(),
-                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.FORBIDDEN.value(),
                 LocalDateTime.now().toString()
         );
     }
